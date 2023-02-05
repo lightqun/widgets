@@ -3,6 +3,7 @@ import { Token } from '@uniswap/sdk-core'
 
 import { SupportedChainId } from './chains'
 import {
+  ALVEY_MSC,
   AMPL,
   CEUR_CELO,
   CMC02_CELO,
@@ -81,6 +82,10 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     CMC02_CELO,
     PORTAL_USDC_CELO,
     PORTAL_ETH_CELO,
+  ],
+  [SupportedChainId.ALVEY]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.ALVEY],
+    ALVEY_MSC,
   ],
 }
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {

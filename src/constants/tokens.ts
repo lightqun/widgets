@@ -2,7 +2,7 @@ import { Currency, Ether, NativeCurrency, Token, WETH9 } from '@uniswap/sdk-core
 import invariant from 'tiny-invariant'
 
 import { UNI_ADDRESS } from './addresses'
-import { SupportedChainId } from './chains'
+import { SupportedChainId, UsdcSupportedChainId } from './chains'
 
 export const USDC_MAINNET = new Token(
   SupportedChainId.MAINNET,
@@ -123,7 +123,7 @@ export const DAI_OPTIMISM = new Token(
   'DAI',
   'Dai stable coin'
 )
-export const USDC: { [chainId in SupportedChainId]: Token } = {
+export const USDC: { [chainId in UsdcSupportedChainId]: Token } = {
   [SupportedChainId.MAINNET]: USDC_MAINNET,
   [SupportedChainId.ARBITRUM_ONE]: USDC_ARBITRUM,
   [SupportedChainId.OPTIMISM]: USDC_OPTIMISM,
@@ -286,6 +286,14 @@ export const CELO_CELO = new Token(
   'CELO',
   'Celo'
 )
+export const ALVEY_WALV = new Token(
+  SupportedChainId.ALVEY,
+  '0xCb3e9919C56efF1004E54175a01e39163a352129',
+  18,
+  'WALV',
+  'Wrapped ALV'
+)
+
 export const CUSD_CELO = new Token(
   SupportedChainId.CELO,
   '0x765DE816845861e75A25fCA122bb6898B8B1282a',
@@ -336,6 +344,14 @@ export const CEUR_CELO_ALFAJORES = new Token(
   'Celo Euro Stablecoin'
 )
 
+export const ALVEY_MSC = new Token(
+  SupportedChainId.ALVEY,
+  '0xC3F825fa284e082ffc056B61EcB2b7c7571b25FF',
+  9,
+  'MSC',
+  'MultiScope'
+)
+
 export const UNI: { [chainId: number]: Token } = {
   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),
   [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap'),
@@ -347,6 +363,7 @@ export const UNI: { [chainId: number]: Token } = {
 export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } = {
   ...(WETH9 as Record<SupportedChainId, Token>),
   [SupportedChainId.CELO]: CELO_CELO,
+  [SupportedChainId.ALVEY]: ALVEY_WALV,
   [SupportedChainId.CELO_ALFAJORES]: CELO_CELO_ALFAJORES,
   [SupportedChainId.OPTIMISM]: new Token(
     SupportedChainId.OPTIMISM,
@@ -407,6 +424,20 @@ function getCeloNativeCurrency(chainId: number) {
   }
 }
 
+export function isAlvey(chainId: number): chainId is SupportedChainId.ALVEY {
+  return chainId === SupportedChainId.ALVEY
+}
+
+function getAlveyNativeCurrency(chainId: number) {
+  switch (chainId) {
+    case SupportedChainId.ALVEY:
+      return ALVEY_WALV
+    default:
+      throw new Error('Not alvey')
+  }
+}
+
+
 function isMatic(chainId: number): chainId is SupportedChainId.POLYGON | SupportedChainId.POLYGON_MUMBAI {
   return chainId === SupportedChainId.POLYGON_MUMBAI || chainId === SupportedChainId.POLYGON
 }
@@ -451,6 +482,8 @@ export function nativeOnChain(chainId: number): NativeCurrency | Token {
     nativeCurrency = new MaticNativeCurrency(chainId)
   } else if (isCelo(chainId)) {
     nativeCurrency = getCeloNativeCurrency(chainId)
+  } else if (isAlvey(chainId)) {
+    nativeCurrency = getAlveyNativeCurrency(chainId)
   } else {
     nativeCurrency = ExtendedEther.onChain(chainId)
   }

@@ -74,4 +74,8 @@ export const JSON_RPC_FALLBACK_ENDPOINTS: Record<SupportedChainId, string[]> = {
     // "Safe" URLs
     'https://alfajores-forno.celo-testnet.org',
   ],
+  [SupportedChainId.ALVEY]: [
+    // "Safe" URLs
+    'https://rpc.alvey.io/rpc',
+  ]
 }

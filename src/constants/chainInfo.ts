@@ -1,6 +1,8 @@
 import ethereumLogoUrl from 'assets/images/ethereum-logo.png'
 import arbitrumLogoUrl from 'assets/svg/arbitrum_logo.svg'
 import celoLogo from 'assets/svg/celo_logo.svg'
+
+import alveyLogo from 'assets/alvey.png'
 import optimismLogoUrl from 'assets/svg/optimism_logo.svg'
 import polygonMaticLogo from 'assets/svg/polygon-matic-logo.svg'
 import ms from 'ms.macro'
@@ -222,7 +224,21 @@ const CHAIN_INFO: ChainInfoMap = {
     nativeCurrency: { name: 'Celo', symbol: 'aCELO', decimals: 18 },
     color: '#35D07F',
     backgroundColor: '#34d07f1f',
-  },
+  },  
+  [SupportedChainId.ALVEY]: {
+    networkType: NetworkType.L1,
+    blockWaitMsBeforeWarning: ms`10m`,
+    bridge: 'https://alveybridge.com/',
+    docs: 'https://www.alveychain.com/',
+    explorer: 'https://alveyscan.com/',
+    infoLink: 'https://www.alveychain.com/',
+    safe: { label: 'Alvey Mainnet' },
+    label: 'Alvey',
+    logoUrl: alveyLogo,
+    nativeCurrency: { name: 'ALV', symbol: 'ALV', decimals: 18 },
+    color: '#35D07F',
+    backgroundColor: '#34d07f1f',
+  }
 }
 
 export function getChainInfo(chainId: SupportedL1ChainId): L1ChainInfo
